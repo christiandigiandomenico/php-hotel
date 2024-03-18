@@ -45,6 +45,22 @@ $parkingHotelCheck = $_GET['parkingcheck'];
 
 $starHotelCheck = $_GET['starcheck'];
 
+if ($parkingHotelCheck) {
+
+    $hotels = array_filter($hotels, function($hotel) {
+        return $hotel['parking'];
+    });
+
+};
+
+if ($starHotelCheck) {
+
+    $hotels = array_filter($hotels, function($hotel)use($starHotelCheck) {
+        return $hotel['vote'] >= $starHotelCheck;
+    });
+
+};
+
 ?>
 
 <!DOCTYPE html>
@@ -61,39 +77,6 @@ $starHotelCheck = $_GET['starcheck'];
 <h1>Hotels</h1>
 
 <hr>
-    
-<table class="table">
-  <thead>
-    <tr>
-        <?php
-
-            $keys = array_keys($hotels[0]);
-
-            echo '<tr>';
-                foreach ($keys as $key) {
-            echo '<th scope="col">' . $key . '</th>';
-            }
-            echo '</tr>'; 
-
-        ?>
-    </tr>
-  </thead>
-  <tbody>
-
-        <?php
-
-        foreach($hotels as $currentHotel) {
-        echo '<tr>';
-        foreach ($currentHotel as $value) {
-        echo '<td>' . $value . '</td>';
-            }
-        echo '</tr>';
-        }
-
-        ?>
-    
-  </tbody>
-</table>
 
 <?php
 
@@ -145,17 +128,13 @@ foreach($hotels as $parkingHotel) {
 
         <?php
 
-        if($parkingHotelCheck == true) {
-
-        foreach($filteredHotels as $currentHotelParking) {
-        echo '<tr>';
-        foreach ($currentHotelParking as $value) {
-        echo '<td>' . $value . '</td>';
+            foreach($hotels as $hotel) {
+            echo '<tr>';
+            foreach ($hotel as $value) {
+            echo '<td>' . $value . '</td>';
+                }
+            echo '</tr>';
             }
-        echo '</tr>';
-        }
-
-    } 
 
         ?>
     
